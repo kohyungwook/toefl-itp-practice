@@ -53,6 +53,10 @@
         .btn span.count { font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; }
         .btn-note { background-color: #059669; }
         .btn-note:hover { background-color: #047857; }
+        .btn-save { background-color: #d97706; }
+        .btn-save:hover { background-color: #b45309; }
+        .btn-sync { background-color: #7c3aed; }
+        .btn-sync:hover { background-color: #6d28d9; }
         .hidden { display: none !important; }
         .question-box { margin-top: 20px; }
         .q-header { display: flex; justify-content: space-between; font-weight: bold; color: var(--text-muted); margin-bottom: 10px; }
@@ -86,7 +90,7 @@
 
 <div class="container">
     <h1>TOEFL ITP Level 1 Practice</h1>
-    <div class="subtitle">전체 문항 연습 및 오답노트 시스템</div>
+    <div class="subtitle">전체 문항 연습, 진도 동기화 및 오답노트 시스템</div>
 
     <div id="loading">문제 데이터베이스를 불러오는 중입니다... 잠시만 기다려주세요!</div>
 
@@ -100,10 +104,22 @@
                 📖 독해 전체 연습세트 (Reading Comprehension)
                 <span class="count" id="reading-count">0제</span>
             </button>
+            <button class="btn btn-save hidden" id="resume-btn" onclick="resumeProgress()">
+                ▶️ 이어서 풀기 (<span id="resume-info">저장된 진도 없음</span>)
+            </button>
             <button class="btn btn-note" onclick="startNoteSession()">
                 📝 오답노트 다시 풀기
                 <span class="count" id="note-count">0제</span>
             </button>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px;">
+                <button class="btn btn-sync" onclick="exportDataFile()" style="justify-content: center; font-size: 0.95rem; padding: 12px;">
+                    📤 진도 백업 파일 다운로드
+                </button>
+                <button class="btn btn-sync" onclick="document.getElementById('import-file').click()" style="justify-content: center; font-size: 0.95rem; padding: 12px;">
+                    📥 진도 파일 불러오기
+                </button>
+                <input type="file" id="import-file" class="hidden" accept=".json" onchange="importDataFile(event)">
+            </div>
         </div>
     </div>
 
@@ -122,6 +138,7 @@
                 <button class="btn btn-secondary" onclick="prevQuestion()">이전 문제</button>
                 <div style="display: flex; gap: 10px;">
                     <button class="btn btn-danger hidden" id="remove-note-btn" onclick="removeFromNote()">오답노트에서 삭제</button>
+                    <button class="btn btn-save" onclick="saveProgressManual()">진도 저장</button>
                     <button class="btn" id="next-btn" onclick="nextQuestion()">다음 문제</button>
                 </div>
             </div>
@@ -135,10 +152,12 @@
 <script>
     let db = { grammar: [], reading: [] };
     let currentQuestions = [];
+    let currentType = '';
     let isNoteMode = false;
     let currentIndex = 0;
     let userAnswers = {};
     let incorrectNote = JSON.parse(localStorage.getItem('toefl_itp_incorrect_note') || '[]');
+    let savedProgress = JSON.parse(localStorage.getItem('toefl_itp_saved_progress') || 'null');
 
     async function loadDatabase() {
         try {
@@ -149,6 +168,7 @@
             document.getElementById('grammar-count').innerText = `${db.grammar.length}제`;
             document.getElementById('reading-count').innerText = `${db.reading.length}제`;
             updateNoteCount();
+            checkSavedProgress();
             
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
@@ -161,6 +181,58 @@
         document.getElementById('note-count').innerText = `${incorrectNote.length}제`;
     }
 
+    function checkSavedProgress() {
+        const resumeBtn = document.getElementById('resume-btn');
+        const resumeInfo = document.getElementById('resume-info');
+        if (savedProgress && savedProgress.questions && savedProgress.questions.length > 0) {
+            let typeName = savedProgress.type === 'grammar' ? '문법' : (savedProgress.type === 'reading' ? '독해' : '오답노트');
+            resumeInfo.innerText = `${typeName} ${savedProgress.index + 1}번째`;
+            resumeBtn.classList.remove('hidden');
+        } else {
+            resumeBtn.classList.add('hidden');
+        }
+    }
+
+    function exportDataFile() {
+        const backupData = {
+            incorrectNote: incorrectNote,
+            savedProgress: savedProgress,
+            exportDate: new Date().toISOString()
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+        const downloadAnchor = document.createElement('a');
+        downloadAnchor.setAttribute("href", dataStr);
+        downloadAnchor.setAttribute("download", "toefl_progress_backup.json");
+        document.body.appendChild(downloadAnchor);
+        downloadAnchor.click();
+        downloadAnchor.remove();
+    }
+
+    function importDataFile(event) {
+        const fileReader = new FileReader();
+        if (event.target.files[0]) {
+            fileReader.readAsText(event.target.files[0], "UTF-8");
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported.incorrectNote) {
+                        incorrectNote = imported.incorrectNote;
+                        localStorage.setItem('toefl_itp_incorrect_note', JSON.stringify(incorrectNote));
+                    }
+                    if (imported.savedProgress) {
+                        savedProgress = imported.savedProgress;
+                        localStorage.setItem('toefl_itp_saved_progress', JSON.stringify(savedProgress));
+                    }
+                    updateNoteCount();
+                    checkSavedProgress();
+                    alert('진도 및 오답노트가 성공적으로 복원되었습니다!');
+                } catch (err) {
+                    alert('올바른 백업 파일 형식이 아닙니다.');
+                }
+            };
+        }
+    }
+
     function startPractice(type) {
         let baseQuestions = type === 'grammar' ? db.grammar : db.reading;
         if (!baseQuestions || baseQuestions.length === 0) {
@@ -168,6 +240,7 @@
             return;
         }
 
+        currentType = type;
         isNoteMode = false;
         currentQuestions = JSON.parse(JSON.stringify(baseQuestions));
         startQuizSession();
@@ -179,14 +252,37 @@
             return;
         }
 
+        currentType = 'note';
         isNoteMode = true;
         currentQuestions = [...incorrectNote];
         startQuizSession();
     }
 
+    function resumeProgress() {
+        if (!savedProgress) return;
+        currentType = savedProgress.type;
+        isNoteMode = savedProgress.isNoteMode;
+        currentQuestions = savedProgress.questions;
+        currentIndex = savedProgress.index;
+        userAnswers = savedProgress.userAnswers || {};
+        startQuizSession();
+    }
+
+    function saveProgressManual() {
+        savedProgress = {
+            type: currentType,
+            isNoteMode: isNoteMode,
+            questions: currentQuestions,
+            index: currentIndex,
+            userAnswers: userAnswers
+        };
+        localStorage.setItem('toefl_itp_saved_progress', JSON.stringify(savedProgress));
+        checkSavedProgress();
+        alert('현재 진도가 저장되었습니다! "진도 백업 파일 다운로드"를 이용해 다른 기기로 옮길 수도 있습니다.');
+    }
+
     function startQuizSession() {
-        currentIndex = 0;
-        userAnswers = {};
+        if (currentIndex >= currentQuestions.length) currentIndex = 0;
         document.getElementById('menu-screen').classList.add('hidden');
         document.getElementById('quiz-screen').classList.remove('hidden');
         loadQuestion();
@@ -252,6 +348,17 @@
                 updateNoteCount();
             }
         }
+        
+        savedProgress = {
+            type: currentType,
+            isNoteMode: isNoteMode,
+            questions: currentQuestions,
+            index: currentIndex,
+            userAnswers: userAnswers
+        };
+        localStorage.setItem('toefl_itp_saved_progress', JSON.stringify(savedProgress));
+        checkSavedProgress();
+
         loadQuestion();
     }
 
@@ -263,6 +370,7 @@
         alert('오답노트에서 삭제되었습니다.');
         
         if (incorrectNote.length === 0) {
+            localStorage.removeItem('toefl_itp_saved_progress');
             returnToMenu();
         } else {
             currentQuestions = [...incorrectNote];
@@ -276,6 +384,7 @@
             currentIndex++;
             loadQuestion();
         } else {
+            localStorage.removeItem('toefl_itp_saved_progress');
             returnToMenu();
         }
     }
@@ -289,6 +398,7 @@
 
     function returnToMenu() {
         updateNoteCount();
+        checkSavedProgress();
         document.getElementById('quiz-screen').classList.add('hidden');
         document.getElementById('menu-screen').classList.remove('hidden');
     }
