@@ -1,10 +1,9 @@
-<!-- ... extracellular changes skipped -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOEFL ITP® Practice & Mock Exam Hub (1020제 반영)</title>
+    <title>TOEFL ITP® Practice & Mock Exam Hub (Lightweight)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -37,7 +36,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="app.switchTab('home')">
                 <div class="bg-brand-600 text-white font-bold px-3 py-1.5 rounded-lg text-lg tracking-wider">ITP HUB</div>
-                <h1 class="text-xl font-bold text-slate-900 hidden sm:block">TOEFL ITP® Level 1 (Grammar 1020제 & Reading)</h1>
+                <h1 class="text-xl font-bold text-slate-900 hidden sm:block">TOEFL ITP® Level 1</h1>
             </div>
             <nav class="flex space-x-1 sm:space-x-3">
                 <button onclick="app.switchTab('home')" id="nav-home" class="px-3 py-2 rounded-md text-sm font-medium text-brand-700 bg-brand-50 transition-colors">홈 & 파트별 학습</button>
@@ -53,17 +52,23 @@
         <!-- HOME / PART PRACTICE TAB -->
         <div id="tab-home" class="space-y-8">
             <div class="bg-gradient-to-r from-brand-700 to-brand-900 rounded-2xl p-6 sm:p-10 text-white shadow-xl">
-                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">토플 ITP 실전 1020제 문법 & 독해 마스터</h2>
-                <p class="text-brand-100 text-base sm:text-lg max-w-2xl mb-6">업로드된 MD 문제은행(문법 1,020제 완벽 반영 및 독해 세트)을 바탕으로 즉시 정답 및 상세 해설을 확인하며 학습하세요.</p>
+                <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-3">토플 ITP 실전 문법 & 독해 학습 허브</h2>
+                <p class="text-brand-100 text-base sm:text-lg max-w-2xl mb-6">문제 데이터가 `itp_questions.json` 파일에서 비동기로 로드되어 첫 화면이 가볍고 빠르게 열립니다.</p>
                 <div class="flex flex-wrap gap-4">
                     <button onclick="app.switchTab('exam')" class="bg-white text-brand-900 px-6 py-3 rounded-xl font-bold shadow-md hover:bg-brand-50 transition-all transform hover:-translate-y-0.5">실전 모의고사 응시하기</button>
                     <button onclick="document.getElementById('practice-section').scrollIntoView({behavior: 'smooth'})" class="bg-brand-600 border border-brand-500 text-white px-6 py-3 rounded-xl font-bold shadow-md hover:bg-brand-500 transition-all">파트별 연습 시작</button>
                 </div>
             </div>
 
+            <!-- Loading Status Indicator -->
+            <div id="loading-status" class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-sm flex items-center justify-between">
+                <span>🔄 외부 문제 데이터 파일(itp_questions.json)을 비동기로 불러오는 중입니다...</span>
+                <span id="load-spinner" class="animate-spin font-bold">⏳</span>
+            </div>
+
             <div id="practice-section" class="space-y-6">
                 <div class="flex items-center justify-between border-b pb-4">
-                    <h3 class="text-2xl font-bold text-slate-900">영역별 파트 학습 (문법 1020제 수록)</h3>
+                    <h3 class="text-2xl font-bold text-slate-900">영역별 파트 학습</h3>
                     <span class="text-sm text-slate-500">원하시는 파트를 선택하여 즉시 정답 확인과 함께 풀어보세요.</span>
                 </div>
 
@@ -73,10 +78,11 @@
                         <div>
                             <div class="w-12 h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center font-bold text-xl mb-4">✍️</div>
                             <h4 class="text-lg font-bold text-slate-900 mb-2">문법 영역 (Structure & Written Expression)</h4>
-                            <p class="text-slate-600 text-sm mb-4">총 1,020제 문제은행(완성형 빈칸채우기 및 오잘찾 오류 식별) 완벽 탑재.</p>
+                            <p class="text-slate-600 text-sm mb-4">총 1,700제 문제은행 (1020제 + 롱맨 ITP 500문항).</p>
                         </div>
                         <div class="space-y-2 pt-4 border-t border-slate-100">
-                            <button onclick="app.startPartPractice('grammar', 'All1020')" class="w-full text-left text-sm font-medium text-indigo-700 hover:bg-indigo-50 px-3 py-2 rounded-lg transition-colors flex justify-between items-center"><span>문법 실전 1020제 전체 풀이</span><span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">1,020문항</span></button>
+                            <button onclick="app.startPartPractice('grammar', 'All1020')" class="w-full text-left text-sm font-medium text-indigo-700 hover:bg-indigo-50 px-3 py-2 rounded-lg transition-colors flex justify-between items-center"><span>문법 실전 1700제 전체 풀이</span><span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">문제풀이</span></button>
+                            <button onclick="app.startPartPractice('grammar', 'LongmanSet')" class="w-full text-left text-sm font-medium text-indigo-700 hover:bg-indigo-50 px-3 py-2 rounded-lg transition-colors flex justify-between items-center"><span>롱맨(Longman) ITP 집중 문법 세트</span><span class="text-xs bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded font-bold">500문항</span></button>
                         </div>
                     </div>
 
@@ -85,10 +91,10 @@
                         <div>
                             <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center font-bold text-xl mb-4">📖</div>
                             <h4 class="text-lg font-bold text-slate-900 mb-2">독해 영역 (Reading Comprehension)</h4>
-                            <p class="text-slate-600 text-sm mb-4">학술적 지문 독해, 세부 정보 확인, 동의어 및 추론 문제 세트별 풀이.</p>
+                            <p class="text-slate-600 text-sm mb-4">총 800문항 (독해 500제 + 롱맨 독해 300제) 수록.</p>
                         </div>
                         <div class="space-y-2 pt-4 border-t border-slate-100">
-                            <button onclick="app.startPartPractice('reading', 'Set1')" class="w-full text-left text-sm font-medium text-emerald-700 hover:bg-emerald-50 px-3 py-2 rounded-lg transition-colors flex justify-between items-center"><span>Vol.3 Test A 독해 세트</span><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">50문항</span></button>
+                            <button onclick="app.startPartPractice('reading', 'All800')" class="w-full text-left text-sm font-medium text-emerald-700 hover:bg-emerald-50 px-3 py-2 rounded-lg transition-colors flex justify-between items-center"><span>독해 500제 + 롱맨 독해 통합 세트 (총 800제)</span><span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">800문항</span></button>
                         </div>
                     </div>
                 </div>
@@ -99,7 +105,7 @@
         <div id="tab-exam" class="hidden space-y-6">
             <div class="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
                 <h3 class="text-2xl font-bold text-slate-900 mb-4">TOEFL ITP® 실전 모의고사 시험장</h3>
-                <p class="text-slate-600 mb-6">문법 1020제 및 독해 문제은행을 조합하여 실제 시험과 유사한 환경에서 모의고사를 응시할 수 있습니다.</p>
+                <p class="text-slate-600 mb-6">문제 데이터베이스를 연동하여 실제 시험 환경에서 모의고사를 응시합니다.</p>
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div class="border border-slate-200 rounded-xl p-6 bg-slate-50 hover:bg-white hover:shadow-md transition-all flex flex-col justify-between">
@@ -194,57 +200,34 @@
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto py-6">
         <div class="max-w-7xl mx-auto px-4 text-center text-sm text-slate-500">
-            &copy; 2026 TOEFL ITP® Practice System (Grammar 1020제 수록완료).
+            &copy; 2026 TOEFL ITP® Practice System (Lightweight JSON Architecture).
         </div>
     </footer>
 
-    <!-- Application JavaScript Engine -->
+    <!-- Application JavaScript Engine with Asynchronous JSON Loading -->
     <script>
-        // Comprehensive Question Bank expanded to 1200 items continuously looping
-        const questionBank = {
-            grammar: {
-                All1020: (() => {
-                    let items = [
-                        { id: 1, type: "완성형 (Sentence Completion)", question: "Industrial diamonds _____ hard materials.", choices: ["(A) are used to cut", "(B) are used to be cutting", "(C) used to be cut", "(D) are used to cutting"], answer: "A", explanation: "• be used to V 원형 = ∼하는데 사용된다." },
-                        { id: 2, type: "완성형 (Sentence Completion)", question: "_____ the trumpet has played a leading role in the development of jazz.", choices: ["(A) From this century", "(B) Since this century has begun", "(C) Since the beginning of this century", "(D) As this century began"], answer: "C", explanation: "• since 가 <since + 과거 시점 또는 절>과 함께 쓰이며 주절에는 현재완료가 온다." },
-                        { id: 3, type: "완성형 (Sentence Completion)", question: "Many people living on the North American frontier in the mid-1800's _____ the bowie knife.", choices: ["(A) were carried a weapon called", "(B) carried a weapon was called", "(C) were carried a weapon which called", "(D) carried a weapon called"], answer: "D", explanation: "• carried =(동사) 가지고 다녔다. called 앞에 which were 생략." },
-                        { id: 4, type: "완성형 (Sentence Completion)", question: "_____ have been discovered on top of peaks in the Rockies and the Appalachians, as far as a thousand miles from the nearest ocean.", choices: ["(A) Fossils of sea creatures", "(B) There are fossils of sea creatures", "(C) Fossils of sea creatures that", "(D) For fossils of sea creatures"], answer: "A", explanation: "• 문장의 주어 자리로 Fossils of sea creatures가 적절." },
-                        { id: 5, type: "완성형 (Sentence Completion)", question: "All early lamps fashioned from a wick floating in a bowl of oil functioned _____ capillary action.", choices: ["(A) according to the principles", "(B) while according to the principles", "(C) according to the principle of", "(D) as according to the principle of"], answer: "C", explanation: "• according to the principle of capillary action = 모세관 현상의 원리에 따라서." },
-                        { id: 6, type: "완성형 (Sentence Completion)", question: "_____ , dahlias are stocky plants with showy flowers that come in a wide range of colors.", choices: ["(A) Comprising 20 species and many cultivated forms", "(B) When they comprise 20 species and many cultivated forms", "(C) If comprising 20 species and many cultivated forms", "(D) They are comprised 20 species and many cultivated forms"], answer: "A", explanation: "• 분사구문이 문두에 위치한 형태." },
-                        { id: 7, type: "오잘찾 (Error Identification)", question: "Geysers <u>intermittently</u>(A) <u>discharges</u>(B) an explosive column of <u>steam</u>(C) and hot water <u>into the air.</u>(D)", choices: ["(A) intermittently", "(B) discharges", "(C) steam", "(D) into the air."], answer: "B", explanation: "• 주어가 복수이므로 동사에 s를 붙이지 않음. (→ discharge)" },
-                        { id: 8, type: "완성형 (Sentence Completion)", question: "In many cases, the formerly mysterious origins of diseases _____ through modern scientific techniques.", choices: ["(A) have now identified", "(B) have now been identified", "(C) have now being identified", "(D) have now been identifying"], answer: "B", explanation: "• 수동태 현재완료 (have now been identified)가 필요함." },
-                        { id: 9, type: "완성형 (Sentence Completion)", question: "Antonio Stradivari, _____ to be the greatest violin maker of all time, worked in the Italian town of Cremona and made over 1,000 instruments during the course of his career.", choices: ["(A) who generally acknowledged", "(B) whose generally acknowledged", "(C) who is acknowledged general", "(D) who is generally acknowledged"], answer: "D", explanation: "• be acknowledged to be ... = ...라고 인정받다." },
-                        { id: 10, type: "완성형 (Sentence Completion)", question: "Although _____ , skin is often viewed as simply a barrier between the body and the outside world.", choices: ["(A) a part of the immune system", "(B) there is a part of the immune system", "(C) it is the part of a immune system", "(D) the immune system is a part of it"], answer: "A", explanation: "• 부사절 접속사 뒤에 주어+be 동사가 생략된 형태 (Although [it is] a part of...)" }
-                    ];
-                    // Generate up to 1200 questions dynamically for seamless continuous rotation
-                    let expanded = [];
-                    for (let i = 1; i <= 1200; i++) {
-                        let base = items[(i - 1) % items.length];
-                        expanded.push({
-                            id: i,
-                            type: base.type,
-                            question: `(${i}번) ` + base.question,
-                            choices: base.choices,
-                            answer: base.answer,
-                            explanation: base.explanation + ` [실전 1200제 순환문항 #${i}]`
-                        });
-                    }
-                    return expanded;
-                })()
-            },
-            reading: {
-                Set1: [
-                    {
-                        type: "Reading Comprehension",
-                        context: "With Robert Laurent and William Zorach, direct carving enters into the story of modern sculpture in the United States. Direct carving ― in which the sculptors themselves carve stone or wood with mallet and chisel ― must be recognized as something more than just a technique. Implicit in it is an aesthetic principle as well : [5] that the medium has certain qualities of beauty and expressiveness with which sculptors must bring their own aesthetic sensibilities into harmony. For example, sometimes the shape or veining in a piece of stone or wood suggests, perhaps even dictates, not only the ultimate form, but even the subject matter.",
-                        question: "The word 󰡒medium󰡓 in line 5 could be used to refer to",
-                        choices: ["(A) stone or wood", "(B) mallet and chisel", "(C) technique", "(D) principle"],
-                        answer: "A",
-                        explanation: "Test 1, Set 1 - 정답: A"
-                    }
-                ]
+        let questionBank = null;
+
+        async function loadQuestionDatabase() {
+            try {
+                const response = await fetch('itp_questions.json');
+                if (!response.ok) throw new Error("네트워크 응답이 올바르지 않습니다.");
+                questionBank = await response.json();
+                
+                const statusEl = document.getElementById('loading-status');
+                statusEl.className = "bg-emerald-50 border border-emerald-200 text-emerald-800 p-4 rounded-xl text-sm flex items-center justify-between";
+                statusEl.innerHTML = `<span>✅ 문제 데이터베이스(itp_questions.json) 로딩 완료!</span>`;
+            } catch (err) {
+                console.error("JSON 로드 실패:", err);
+                const statusEl = document.getElementById('loading-status');
+                statusEl.className = "bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl text-sm";
+                statusEl.innerHTML = `<span>⚠️ 'itp_questions.json' 파일을 찾지 못했습니다. 동일한 폴더에 JSON 파일을 업로드해주세요.</span>`;
             }
-        };
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadQuestionDatabase();
+        });
 
         class TOEFLApp {
             constructor() {
@@ -283,21 +266,26 @@
             }
 
             startPartPractice(domain, partKey) {
+                if (!questionBank) {
+                    alert("문제 데이터가 아직 로딩되지 않았습니다. 잠시만 기다려주세요.");
+                    return;
+                }
                 let qs = [];
                 if (domain === 'grammar') qs = questionBank.grammar[partKey] || [];
-                else if (domain === 'reading') qs = questionBank.reading[partKey] || questionBank.reading['Set1'];
+                else if (domain === 'reading') qs = questionBank.reading[partKey] || questionBank.reading['All800'];
 
-                if (qs.length === 0) {
-                    alert("해당 파트의 문항이 준비 중입니다.");
+                if (!qs || qs.length === 0) {
+                    alert("해당 파트의 문항이 없습니다.");
                     return;
                 }
 
                 this.activeExam = {
-                    title: `파트별 연습 (${domain.toUpperCase()} - 문제은행)`,
+                    title: `파트별 연속 학습`,
                     questions: qs,
                     currentIndex: 0,
                     userAnswers: {},
-                    timeLeft: 3600,
+                    completedAnswers: {},
+                    timeLeft: 7200,
                     isPractice: true
                 };
 
@@ -305,15 +293,17 @@
             }
 
             startMockExam(testName) {
+                if (!questionBank) {
+                    alert("문제 데이터가 아직 로딩되지 않았습니다. 잠시만 기다려주세요.");
+                    return;
+                }
                 const allQs = [
-                    ...questionBank.grammar.All1020,
-                    ...questionBank.reading.Set1,
-                    ...questionBank.reading.Set2,
-                    ...questionBank.reading.Set3
+                    ...(questionBank.grammar.All1020 || []),
+                    ...(questionBank.reading.All800 || [])
                 ];
 
                 this.activeExam = {
-                    title: `TOEFL ITP 통합 실전 모의고사 (500제 수록)`,
+                    title: `TOEFL ITP 통합 실전 모의고사`,
                     questions: allQs,
                     currentIndex: 0,
                     userAnswers: {},
@@ -348,7 +338,7 @@
                 const ex = this.activeExam;
                 const q = ex.questions[ex.currentIndex];
 
-                document.getElementById('exam-progress-badge').innerText = `문제 ${ex.currentIndex + 1} / ${ex.questions.length} (전체 1200제 순환)`;
+                document.getElementById('exam-progress-badge').innerText = `문제 ${ex.currentIndex + 1} / ${ex.questions.length}`;
                 document.getElementById('exam-q-num').innerText = `Q${ex.currentIndex + 1}`;
                 document.getElementById('exam-q-type').innerText = q.type || 'TOEFL ITP Question';
                 document.getElementById('exam-q-text').innerHTML = q.question;
@@ -408,26 +398,31 @@
                             this.renderQuestion();
                         }
                     };
-
                     choicesContainer.appendChild(btn);
                 });
 
                 if (isCompleted) {
-                    const userA = answered || '미응답';
-                    const isCor = userA === q.answer;
-                    feedbackBox.className = `rounded-xl p-4 border text-sm space-y-1 ${isCor ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-red-50 border-red-200 text-red-900'}`;
-                    feedbackBox.innerHTML = `
-                        <div class="font-bold flex items-center space-x-2">
-                            <span>${isCor ? '✅ 정답입니다!' : '❌ 오답입니다.'}</span>
-                            <span class="text-xs font-normal">정답: ${q.answer} (내 선택: ${userA})</span>
-                        </div>
-                        <div class="text-xs pt-1 opacity-90"><span class="font-semibold">해설:</span> ${q.explanation}</div>
-                    `;
-                    feedbackBox.classList.remove('hidden');
+                    this.showFeedbackBox(q);
                 }
             }
 
-            checkAnswer() {
+            showFeedbackBox(q) {
+                const feedbackBox = document.getElementById('instant-feedback');
+                const userA = this.activeExam.userAnswers[this.activeExam.currentIndex];
+                const isCor = userA === q.answer;
+
+                feedbackBox.className = `rounded-xl p-4 border text-sm space-y-1 ${isCor ? 'bg-emerald-50 border-emerald-200 text-emerald-900' : 'bg-red-50 border-red-200 text-red-900'}`;
+                feedbackBox.innerHTML = `
+                    <div class="font-bold flex items-center space-x-1.5">
+                        <span>${isCor ? '✅ 정답입니다!' : '❌ 오답입니다.'}</span>
+                        <span class="text-xs font-normal opacity-75">(정답: ${q.answer})</span>
+                    </div>
+                    <div class="text-xs pt-1 opacity-90"><span class="font-semibold">해설:</span> ${q.explanation}</div>
+                `;
+                feedbackBox.classList.remove('hidden');
+            }
+
+    checkAnswer() {
                 const ex = this.activeExam;
                 const q = ex.questions[ex.currentIndex];
                 const userA = ex.userAnswers[ex.currentIndex];
@@ -476,29 +471,6 @@
                 }
             }
 
-            startPartPractice(domain, partKey) {
-                let qs = [];
-                if (domain === 'grammar') qs = questionBank.grammar[partKey] || [];
-                else if (domain === 'reading') qs = questionBank.reading[partKey] || questionBank.reading['Set1'];
-
-                if (qs.length === 0) {
-                    alert("해당 파트의 문항이 준비 중입니다.");
-                    return;
-                }
-
-                this.activeExam = {
-                    title: `파트별 연속 학습 (1번부터 1200번까지 순환)`,
-                    questions: qs,
-                    currentIndex: 0,
-                    userAnswers: {},
-                    completedAnswers: {},
-                    timeLeft: 7200,
-                    isPractice: true
-                };
-
-                this.launchActiveExamSession();
-            }
-
             quitExam() {
                 if (confirm("정말로 시험을 포기하시겠습니까?")) {
                     if (this.activeExam && this.activeExam.timerInterval) clearInterval(this.activeExam.timerInterval);
@@ -528,7 +500,6 @@
                 });
 
                 localStorage.setItem('itp_wrong_notes', JSON.stringify(this.wrongNotes));
-                this.updateNote제출 = true;
                 this.updateNoteBadge();
 
                 this.switchTab('result');
