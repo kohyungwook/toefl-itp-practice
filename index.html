@@ -44,6 +44,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: background-color 0.2s;
+z-index: 1;
             text-align: left;
             display: flex;
             justify-content: space-between;
@@ -51,6 +52,8 @@
         }
         .btn:hover { background-color: var(--primary-hover); }
         .btn span.count { font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; }
+        .btn-note { background-color: #059669; }
+        .btn-note:hover { background-color: #047857; }
         .hidden { display: none !important; }
         .question-box { margin-top: 20px; }
         .q-header { display: flex; justify-content: space-between; font-weight: bold; color: var(--text-muted); margin-bottom: 10px; }
@@ -74,6 +77,8 @@
         .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; }
         .btn-secondary { background-color: #64748b; }
         .btn-secondary:hover { background-color: #475569; }
+        .btn-danger { background-color: #dc2626; }
+        .btn-danger:hover { background-color: #b91c1c; }
         #loading { text-align: center; padding: 40px; font-size: 1.2rem; color: var(--text-muted); }
     </style>
 </head>
@@ -81,19 +86,23 @@
 
 <div class="container">
     <h1>TOEFL ITP Level 1 Practice</h1>
-    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램 (v2.5)</div>
+    <div class="subtitle">문법 실전 40제 세트 및 오답노트 시스템</div>
 
     <div id="loading">문제 데이터베이스를 불러오는 중입니다... 잠시만 기다려주세요!</div>
 
     <div id="menu-screen" class="hidden">
         <div class="menu-grid">
             <button class="btn" onclick="startSession('grammar')">
-                📚 문법 통합 세트 (Structure & Written Expression)
-                <span class="count">1,700제</span>
+                📚 문법 실전 세트 (Structure & Written Expression)
+                <span class="count">40제 출제</span>
             </button>
             <button class="btn" onclick="startSession('reading')">
                 📖 독해 통합 세트 (Reading Comprehension)
                 <span class="count">800제</span>
+            </button>
+            <button class="btn btn-note" onclick="startNoteSession()">
+                📝 오답노트 다시 풀기
+                <span class="count" id="note-count">0제</span>
             </button>
         </div>
     </div>
@@ -101,7 +110,7 @@
     <div id="quiz-screen" class="hidden">
         <div class="question-box">
             <div class="q-header">
-                <span id="q-progress">문제 1 / 1700</span>
+                <span id="q-progress">문제 1 / 40</span>
                 <span id="q-category">문법</span>
             </div>
             <div id="passage-box" class="explanation hidden" style="margin-bottom: 20px; background: #fffbeb; border: 1px solid #fde68a;"></div>
@@ -111,7 +120,10 @@
             
             <div class="nav-buttons">
                 <button class="btn btn-secondary" onclick="prevQuestion()">이전 문제</button>
-                <button class="btn" id="next-btn" onclick="nextQuestion()">다음 문제</button>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-danger hidden" id="remove-note-btn" onclick="removeFromNote()">오답노트에서 삭제</button>
+                    <button class="btn" id="next-btn" onclick="nextQuestion()">다음 문제</button>
+                </div>
             </div>
         </div>
         <div style="margin-top: 20px; text-align: center;">
@@ -123,22 +135,28 @@
 <script>
     let db = { grammar: [], reading: [] };
     let currentQuestions = [];
-    let totalTargetCount = 1700;
+    let isNoteMode = false;
+    let totalTargetCount = 40;
     let currentIndex = 0;
     let userAnswers = {};
+    let incorrectNote = JSON.parse(localStorage.getItem('toefl_itp_incorrect_note') || '[]');
 
     async function loadDatabase() {
         try {
-            // 캐시를 타지 않도록 현재 시간을 파라미터로 붙여서 강제 로딩
             const response = await fetch('itp_questions.json?v=' + new Date().getTime());
             if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
             db = await response.json();
             
+            updateNoteCount();
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
         } catch (error) {
             document.getElementById('loading').innerHTML = `❌ 문제 데이터를 불러오는 데 실패했습니다.<br><small style="color:red;">${error.message}</small><br><br><b>itp_questions.json</b> 파일이 동일한 폴더에 있는지 확인해주세요.`;
         }
+    }
+
+    function updateNoteCount() {
+        document.getElementById('note-count').innerText = `${incorrectNote.length}제`;
     }
 
     function startSession(type) {
@@ -148,12 +166,14 @@
             return;
         }
 
-        totalTargetCount = type === 'grammar' ? 1700 : 800;
+        isNoteMode = false;
+        totalTargetCount = (type === 'grammar') ? 40 : 800;
         
         currentQuestions = [];
         for (let i = 0; i < totalTargetCount; i++) {
             let template = baseQuestions[i % baseQuestions.length];
             currentQuestions.push({
+                id: `${type}_${i}`,
                 type: template.type || (type === 'grammar' ? 'Structure' : 'Reading Comprehension'),
                 passage: template.passage || null,
                 question: `${i + 1}. ` + template.question.replace(/^\d+\.\s*/, ''),
@@ -163,6 +183,21 @@
             });
         }
 
+        startQuizSession();
+    }
+
+    function startNoteSession() {
+        if (incorrectNote.length === 0) {
+            alert('저장된 오답노트가 없습니다. 문제를 풀다가 틀린 문제가 자동으로 저장됩니다!');
+            return;
+        }
+
+        isNoteMode = true;
+        currentQuestions = [...incorrectNote];
+        startQuizSession();
+    }
+
+    function startQuizSession() {
         currentIndex = 0;
         userAnswers = {};
         document.getElementById('menu-screen').classList.add('hidden');
@@ -203,20 +238,56 @@
         });
 
         const expBox = document.getElementById('explanation-box');
+        const removeBtn = document.getElementById('remove-note-btn');
+
         if (userAnswers[currentIndex] !== undefined) {
             expBox.innerHTML = `<b>해설:</b> ${q.explanation || '제공된 해설이 없습니다.'}`;
             expBox.classList.remove('hidden');
+            
+            if (isNoteMode) {
+                removeBtn.classList.remove('hidden');
+            } else {
+                removeBtn.classList.add('hidden');
+            }
         } else {
             expBox.classList.add('hidden');
+            removeBtn.classList.add('hidden');
         }
 
-        document.getElementById('next-btn').innerText = (currentIndex === currentQuestions.length - 1) ? '처음으로' : '다음 문제';
+        document.getElementById('next-btn').innerText = (currentIndex === currentQuestions.length - 1) ? '메뉴로' : '다음 문제';
     }
 
     function selectAnswer(idx) {
         if (userAnswers[currentIndex] !== undefined) return;
         userAnswers[currentIndex] = idx;
+        
+        const q = currentQuestions[currentIndex];
+        
+        if (idx !== q.answer && !isNoteMode) {
+            const exists = incorrectNote.some(item => item.question === q.question);
+            if (!exists) {
+                incorrectNote.push(q);
+                localStorage.setItem('toefl_itp_incorrect_note', JSON.stringify(incorrectNote));
+                updateNoteCount();
+            }
+        }
         loadQuestion();
+    }
+
+    function removeFromNote() {
+        const q = currentQuestions[currentIndex];
+        incorrectNote = incorrectNote.filter(item => item.question !== q.question);
+        localStorage.setItem('toefl_itp_incorrect_note', JSON.stringify(incorrectNote));
+        updateNoteCount();
+        alert('오답노트에서 삭제되었습니다.');
+        
+        if (incorrectNote.length === 0) {
+            returnToMenu();
+        } else {
+            currentQuestions = [...incorrectNote];
+            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
+            loadQuestion();
+        }
     }
 
     function nextQuestion() {
@@ -224,9 +295,7 @@
             currentIndex++;
             loadQuestion();
         } else {
-            if (confirm('모든 문제를 다 풀었습니다. 메뉴로 돌아가시겠습니까?')) {
-                returnToMenu();
-            }
+            returnToMenu();
         }
     }
 
@@ -238,6 +307,7 @@
     }
 
     function returnToMenu() {
+        updateNoteCount();
         document.getElementById('quiz-screen').classList.add('hidden');
         document.getElementById('menu-screen').classList.remove('hidden');
     }
