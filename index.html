@@ -81,7 +81,7 @@
 
 <div class="container">
     <h1>TOEFL ITP Level 1 Practice</h1>
-    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램</div>
+    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램 (v2.5)</div>
 
     <div id="loading">문제 데이터베이스를 불러오는 중입니다... 잠시만 기다려주세요!</div>
 
@@ -129,7 +129,8 @@
 
     async function loadDatabase() {
         try {
-            const response = await fetch('itp_questions.json');
+            // 캐시를 타지 않도록 현재 시간을 파라미터로 붙여서 강제 로딩
+            const response = await fetch('itp_questions.json?v=' + new Date().getTime());
             if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
             db = await response.json();
             
@@ -149,11 +150,9 @@
 
         totalTargetCount = type === 'grammar' ? 1700 : 800;
         
-        // 1700제 / 800제가 되도록 문항 배열을 자동으로 채우거나 순환 확장
         currentQuestions = [];
         for (let i = 0; i < totalTargetCount; i++) {
             let template = baseQuestions[i % baseQuestions.length];
-            // 복사해서 문제 번호만 순차적으로 매겨주기
             currentQuestions.push({
                 type: template.type || (type === 'grammar' ? 'Structure' : 'Reading Comprehension'),
                 passage: template.passage || null,
