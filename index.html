@@ -73,7 +73,7 @@
             cursor: pointer;
             transition: all 0.2s;
         }
-        .option-btn:hover { border-color: var(--primary); background: #eff6ff; }
+        .option-btn.hover { border-color: var(--primary); background: #eff6ff; }
         .option-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: bold; }
         .option-btn.correct { border-color: #16a34a; background: #dcfce7; color: #166534; }
         .option-btn.wrong { border-color: #dc2626; background: #fee2e2; color: #991b1b; }
@@ -90,7 +90,7 @@
 
 <div class="container">
     <h1>TOEFL ITP Level 1 Practice</h1>
-    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램</div>
+    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램 (v3.0)</div>
 
     <div id="loading">문제 데이터베이스를 불러오는 중입니다... 잠시만 기다려주세요!</div>
 
@@ -161,7 +161,8 @@
 
     async function loadDatabase() {
         try {
-            const response = await fetch('itp_questions.json?v=' + new Date().getTime());
+            // 캐시를 완전히 우회하기 위해 타임스탬프 파라미터 강제 추가
+            const response = await fetch('itp_questions.json?cb=' + new Date().getTime());
             if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
             db = await response.json();
             
@@ -242,7 +243,6 @@
         isNoteMode = false;
         let targetCount = (type === 'grammar') ? 1700 : 800;
 
-        // 문법 1,700제 / 독해 800제 분량에 맞춰 자동으로 번호와 데이터를 순환 확장
         currentQuestions = [];
         for (let i = 0; i < targetCount; i++) {
             let template = baseQuestions[i % baseQuestions.length];
@@ -292,7 +292,7 @@
         };
         localStorage.setItem('toefl_itp_saved_progress', JSON.stringify(savedProgress));
         checkSavedProgress();
-        alert('현재 진도가 저장되었습니다! "진도 백업 파일 다운로드"를 이용해 다른 기기로 옮길 수도 있습니다.');
+        alert('현재 진도가 저장되었습니다!');
     }
 
     function startQuizSession() {
@@ -317,108 +317,4 @@
         }
 
         const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-
-        q.options.forEach((opt, idx) => {
-            const btn = document.createElement('button');
-            btn.className = 'option-btn';
-            btn.innerText = `${['A', 'B', 'C', 'D'][idx]}. ${opt}`;
-            btn.onclick = () => selectAnswer(idx);
-            
-            if (userAnswers[currentIndex] !== undefined) {
-                if (idx === q.answer) btn.classList.add('correct');
-                if (userAnswers[currentIndex] === idx && idx !== q.answer) btn.classList.add('wrong');
-                if (userAnswers[currentIndex] === idx) btn.classList.add('selected');
-                btn.disabled = true;
-            }
-            optionsContainer.appendChild(btn);
-        });
-
-        const expBox = document.getElementById('explanation-box');
-        const removeBtn = document.getElementById('remove-note-btn');
-
-        if (userAnswers[currentIndex] !== undefined) {
-            expBox.innerHTML = `<b>해설:</b> ${q.explanation || '제공된 해설이 없습니다.'}`;
-            expBox.classList.get ? expBox.classList.remove('hidden') : expBox.classList.remove('hidden');
-            if (isNoteMode) removeBtn.classList.remove('hidden');
-        } else {
-            expBox.classList.add('hidden');
-            removeBtn.classList.add('hidden');
-        }
-
-        document.getElementById('next-btn').innerText = (currentIndex === currentQuestions.length - 1) ? '메뉴로' : '다음 문제';
-    }
-
-    function selectAnswer(idx) {
-        if (userAnswers[currentIndex] !== undefined) return;
-        userAnswers[currentIndex] = idx;
-        
-        const q = currentQuestions[currentIndex];
-        if (idx !== q.answer && !isNoteMode) {
-            const exists = incorrectNote.some(item => item.question === q.question);
-            if (!exists) {
-                incorrectNote.push(q);
-                localStorage.setItem('toefl_itp_incorrect_note', JSON.stringify(incorrectNote));
-                updateNoteCount();
-            }
-        }
-        
-        savedProgress = {
-            type: currentType,
-            isNoteMode: isNoteMode,
-            questions: currentQuestions,
-            index: currentIndex,
-            userAnswers: userAnswers
-        };
-        localStorage.setItem('toefl_itp_saved_progress', JSON.stringify(savedProgress));
-        checkSavedProgress();
-
-        loadQuestion();
-    }
-
-    function removeFromNote() {
-        const q = currentQuestions[currentIndex];
-        incorrectNote = incorrectNote.filter(item => item.question !== q.question);
-        localStorage.setItem('toefl_itp_incorrect_note', JSON.stringify(incorrectNote));
-        updateNoteCount();
-        alert('오답노트에서 삭제되었습니다.');
-        
-        if (incorrectNote.length === 0) {
-            localStorage.removeItem('toefl_itp_saved_progress');
-            returnToMenu();
-        } else {
-            currentQuestions = [...incorrectNote];
-            if (currentIndex >= currentQuestions.length) currentIndex = currentQuestions.length - 1;
-            loadQuestion();
-        }
-    }
-
-    function nextQuestion() {
-        if (currentIndex < currentQuestions.length - 1) {
-            currentIndex++;
-            loadQuestion();
-        } else {
-            localStorage.removeItem('toefl_itp_saved_progress');
-            returnToMenu();
-        }
-    }
-
-    function prevQuestion() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            loadQuestion();
-        }
-    }
-
-    function returnToMenu() {
-        updateNoteCount();
-        checkSavedProgress();
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('menu-screen').classList.remove('hidden');
-    }
-
-    window.onload = loadDatabase;
-</script>
-
-</body>
-</html>
+        optionsContainer.innerHTML =
