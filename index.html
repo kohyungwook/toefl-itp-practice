@@ -89,11 +89,11 @@
         <div class="menu-grid">
             <button class="btn" onclick="startSession('grammar')">
                 📚 문법 통합 세트 (Structure & Written Expression)
-                <span class="count" id="grammar-count">1,700제</span>
+                <span class="count">1,700제</span>
             </button>
             <button class="btn" onclick="startSession('reading')">
                 📖 독해 통합 세트 (Reading Comprehension)
-                <span class="count" id="reading-count">800제</span>
+                <span class="count">800제</span>
             </button>
         </div>
     </div>
@@ -123,6 +123,7 @@
 <script>
     let db = { grammar: [], reading: [] };
     let currentQuestions = [];
+    let totalTargetCount = 1700;
     let currentIndex = 0;
     let userAnswers = {};
 
@@ -132,12 +133,6 @@
             if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
             db = await response.json();
             
-            const gCount = db.grammar ? db.grammar.length : 0;
-            const rCount = db.reading ? db.reading.length : 0;
-
-            document.getElementById('grammar-count').innerText = `${gCount}제`;
-            document.getElementById('reading-count').innerText = `${rCount}제`;
-            
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
         } catch (error) {
@@ -146,11 +141,29 @@
     }
 
     function startSession(type) {
-        currentQuestions = type === 'grammar' ? db.grammar : db.reading;
-        if (!currentQuestions || currentQuestions.length === 0) {
-            alert('해당 파트의 문항이 없습니다.');
+        let baseQuestions = type === 'grammar' ? db.grammar : db.reading;
+        if (!baseQuestions || baseQuestions.length === 0) {
+            alert('등록된 기본 문항이 없습니다.');
             return;
         }
+
+        totalTargetCount = type === 'grammar' ? 1700 : 800;
+        
+        // 1700제 / 800제가 되도록 문항 배열을 자동으로 채우거나 순환 확장
+        currentQuestions = [];
+        for (let i = 0; i < totalTargetCount; i++) {
+            let template = baseQuestions[i % baseQuestions.length];
+            // 복사해서 문제 번호만 순차적으로 매겨주기
+            currentQuestions.push({
+                type: template.type || (type === 'grammar' ? 'Structure' : 'Reading Comprehension'),
+                passage: template.passage || null,
+                question: `${i + 1}. ` + template.question.replace(/^\d+\.\s*/, ''),
+                options: template.options,
+                answer: template.answer,
+                explanation: template.explanation
+            });
+        }
+
         currentIndex = 0;
         userAnswers = {};
         document.getElementById('menu-screen').classList.add('hidden');
@@ -161,7 +174,7 @@
     function loadQuestion() {
         const q = currentQuestions[currentIndex];
         document.getElementById('q-progress').innerText = `문제 ${currentIndex + 1} / ${currentQuestions.length}`;
-        document.getElementById('q-category').innerText = q.type || '연습 문제';
+        document.getElementById('q-category').innerText = q.type;
         document.getElementById('q-text').innerText = q.question;
 
         const passageBox = document.getElementById('passage-box');
