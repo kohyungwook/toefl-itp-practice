@@ -132,8 +132,11 @@
             if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
             db = await response.json();
             
-            document.getElementById('grammar-count').innerText = `${db.grammar.length}제`;
-            document.getElementById('reading-count').innerText = `${db.reading.length}제`;
+            const gCount = db.grammar ? db.grammar.length : 0;
+            const rCount = db.reading ? db.reading.length : 0;
+
+            document.getElementById('grammar-count').innerText = `${gCount}제`;
+            document.getElementById('reading-count').innerText = `${rCount}제`;
             
             document.getElementById('loading').classList.add('hidden');
             document.getElementById('menu-screen').classList.remove('hidden');
@@ -145,7 +148,7 @@
     function startSession(type) {
         currentQuestions = type === 'grammar' ? db.grammar : db.reading;
         if (!currentQuestions || currentQuestions.length === 0) {
-            alert('문제가 없습니다.');
+            alert('해당 파트의 문항이 없습니다.');
             return;
         }
         currentIndex = 0;
@@ -161,7 +164,6 @@
         document.getElementById('q-category').innerText = q.type || '연습 문제';
         document.getElementById('q-text').innerText = q.question;
 
-        // 독해 지문 처리
         const passageBox = document.getElementById('passage-box');
         if (q.passage) {
             passageBox.innerText = q.passage;
