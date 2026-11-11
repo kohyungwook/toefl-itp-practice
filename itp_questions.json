@@ -1,9 +1,28 @@
 {
   "grammar": [
-    {"type": "Structure", "question": "1. Glass that has been tempered _________.", "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"], "answer": 1, "explanation": "주어 'Glass that has been tempered'에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."},
-    {"type": "Written Expression", "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.", "options": ["Economists", "proven", "rapid expansion", "lead"], "answer": 3, "explanation": "주어는 'a rapid expansion'(단수)이므로 동사 'lead'는 단수형 'leads'가 되어야 합니다."}
+    {
+      "type": "Structure",
+      "question": "1. Glass that has been tempered _________.",
+      "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"],
+      "answer": 1,
+      "explanation": "주어 'Glass that has been tempered'에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."
+    },
+    {
+      "type": "Written Expression",
+      "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.",
+      "options": ["Economists", "proven", "rapid expansion", "lead"],
+      "answer": 3,
+      "explanation": "주어는 'a rapid expansion'(단수)이므로 동사 'lead'는 단수형 'leads'가 되어야 합니다."
+    }
   ],
   "reading": [
-    {"type": "Reading Comprehension", "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.", "question": "1. What is the main topic of the passage?", "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"], "answer": 1, "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."}
+    {
+      "type": "Reading Comprehension",
+      "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.",
+      "question": "1. What is the main topic of the passage?",
+      "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"],
+      "answer": 1,
+      "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."
+    }
   ]
 }
