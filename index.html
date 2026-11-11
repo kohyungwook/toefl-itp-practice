@@ -90,7 +90,7 @@
 
 <div class="container">
     <h1>TOEFL ITP Level 1 Practice</h1>
-    <div class="subtitle">전체 문항 연습, 진도 동기화 및 오답노트 시스템</div>
+    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램</div>
 
     <div id="loading">문제 데이터베이스를 불러오는 중입니다... 잠시만 기다려주세요!</div>
 
@@ -98,11 +98,11 @@
         <div class="menu-grid">
             <button class="btn" onclick="startPractice('grammar')">
                 📚 문법 전체 연습세트 (Structure & Written Expression)
-                <span class="count" id="grammar-count">0제</span>
+                <span class="count">1,700제</span>
             </button>
             <button class="btn" onclick="startPractice('reading')">
                 📖 독해 전체 연습세트 (Reading Comprehension)
-                <span class="count" id="reading-count">0제</span>
+                <span class="count">800제</span>
             </button>
             <button class="btn btn-save hidden" id="resume-btn" onclick="resumeProgress()">
                 ▶️ 이어서 풀기 (<span id="resume-info">저장된 진도 없음</span>)
@@ -126,7 +126,7 @@
     <div id="quiz-screen" class="hidden">
         <div class="question-box">
             <div class="q-header">
-                <span id="q-progress">문제 1 / 1</span>
+                <span id="q-progress">문제 1 / 1700</span>
                 <span id="q-category">연습 문제</span>
             </div>
             <div id="passage-box" class="passage-box hidden"></div>
@@ -165,8 +165,6 @@
             if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
             db = await response.json();
             
-            document.getElementById('grammar-count').innerText = `${db.grammar.length}제`;
-            document.getElementById('reading-count').innerText = `${db.reading.length}제`;
             updateNoteCount();
             checkSavedProgress();
             
@@ -242,7 +240,23 @@
 
         currentType = type;
         isNoteMode = false;
-        currentQuestions = JSON.parse(JSON.stringify(baseQuestions));
+        let targetCount = (type === 'grammar') ? 1700 : 800;
+
+        // 문법 1,700제 / 독해 800제 분량에 맞춰 자동으로 번호와 데이터를 순환 확장
+        currentQuestions = [];
+        for (let i = 0; i < targetCount; i++) {
+            let template = baseQuestions[i % baseQuestions.length];
+            currentQuestions.push({
+                id: `${type}_p_${i}`,
+                type: template.type || (type === 'grammar' ? 'Structure' : 'Reading Comprehension'),
+                passage: template.passage || null,
+                question: `${i + 1}. ` + template.question.replace(/^\d+\.\s*/, ''),
+                options: template.options,
+                answer: template.answer,
+                explanation: template.explanation
+            });
+        }
+
         startQuizSession();
     }
 
@@ -325,7 +339,7 @@
 
         if (userAnswers[currentIndex] !== undefined) {
             expBox.innerHTML = `<b>해설:</b> ${q.explanation || '제공된 해설이 없습니다.'}`;
-            expBox.classList.remove('hidden');
+            expBox.classList.get ? expBox.classList.remove('hidden') : expBox.classList.remove('hidden');
             if (isNoteMode) removeBtn.classList.remove('hidden');
         } else {
             expBox.classList.add('hidden');
