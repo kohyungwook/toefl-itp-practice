@@ -1,28 +1,13 @@
 {
   "grammar": [
-    {
-      "type": "Structure",
-      "question": "1. Glass that has been tempered _________.",
-      "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"],
-      "answer": 1,
-      "explanation": "주어 'Glass that has been tempered'에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."
-    },
-    {
-      "type": "Written Expression",
-      "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.",
-      "options": ["Economists", "proven", "rapid expansion", "lead"],
-      "answer": 3,
-      "explanation": "주어는 'a rapid expansion'(단수)이므로 동사 'lead'는 단수형 'leads'가 되어야 합니다."
-    }
+    {"type": "Structure", "question": "1. Glass that has been tempered _________.", "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"], "answer": 1, "explanation": "주어 'Glass that has been tempered'에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."},
+    {"type": "Written Expression", "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.", "options": ["Economists", "proven", "rapid expansion", "lead"], "answer": 3, "explanation": "주어는 'a rapid expansion'(단수)이므로 동사 'lead'는 단수형 'leads'가 되어야 합니다."},
+    {"type": "Structure", "question": "3. The first cotton mill in the United States _________ in Pawtucket, Rhode Island, in 1790.", "options": ["was established", "establishing", "established", "it was established"], "answer": 0, "explanation": "1790년에 설립된 수동태 문장이므로 'was established'가 정답입니다."},
+    {"type": "Written Expression", "question": "4. (A) Unlike most bird, (B) the male emperor penguin (C) alone incubates (D) the egg.", "options": ["Unlike", "most bird", "alone incubates", "the egg"], "answer": 1, "explanation": "most 뒤에는 복수명사가 와야 하므로 'most birds'가 되어야 합니다."},
+    {"type": "Structure", "question": "5. Not only _________ generate electricity, but it also creates magnetic fields.", "options": ["does a dynamo", "a dynamo does", "is a dynamo", "a dynamo is"], "answer": 0, "explanation": "Not only가 문장 맨 앞에 오면 주어와 동사가 도치되므로 'does a dynamo'가 정답입니다."}
   ],
   "reading": [
-    {
-      "type": "Reading Comprehension",
-      "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.",
-      "question": "1. What is the main topic of the passage?",
-      "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"],
-      "answer": 1,
-      "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."
-    }
+    {"type": "Reading Comprehension", "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.", "question": "1. What is the main topic of the passage?", "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"], "answer": 1, "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."},
+    {"type": "Reading Comprehension", "passage": "The chameleon is best known for its ability to change color, which it uses primarily for communication and temperature regulation rather than camouflage.", "question": "2. According to the passage, why do chameleons change color?", "options": ["To hide from predators completely", "For communication and temperature regulation", "To find food in the dark", "To attract other animal species"], "answer": 1, "explanation": "지문에서 의사소통(communication)과 체온 조절(temperature regulation)을 위해서라고 명시되어 있습니다."}
   ]
 }
