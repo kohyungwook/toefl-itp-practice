@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOEFL ITP Level 1 Practice Master</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        h1 { font-size: 1.8rem; color: var(--primary); margin-bottom: 5px; text-align: center; }
+        .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 0.95rem; }
+        .menu-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px; }
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .btn:hover { background-color: var(--primary-hover); }
+        .btn span.count { font-size: 0.9rem; background: rgba(255,255,255,0.2); padding: 4px 10px; border-radius: 20px; }
+        .hidden { display: none !important; }
+        .question-box { margin-top: 20px; }
+        .q-header { display: flex; justify-content: space-between; font-weight: bold; color: var(--text-muted); margin-bottom: 10px; }
+        .q-text { font-size: 1.15rem; line-height: 1.6; margin-bottom: 20px; white-space: pre-line; }
+        .options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+        .option-btn {
+            background: white;
+            border: 2px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .option-btn:hover { border-color: var(--primary); background: #eff6ff; }
+        .option-btn.selected { border-color: var(--primary); background: #dbeafe; font-weight: bold; }
+        .option-btn.correct { border-color: #16a34a; background: #dcfce7; color: #166534; }
+        .option-btn.wrong { border-color: #dc2626; background: #fee2e2; color: #991b1b; }
+        .explanation { background: #f1f5f9; padding: 15px; border-radius: 6px; margin-top: 15px; font-size: 0.95rem; line-height: 1.5; }
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 25px; }
+        .btn-secondary { background-color: #64748b; }
+        .btn-secondary:hover { background-color: #475569; }
+        #loading { text-align: center; padding: 40px; font-size: 1.2rem; color: var(--text-muted); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>TOEFL ITP Level 1 Practice</h1>
+    <div class="subtitle">문법 1,700제 및 독해 800제 마스터 프로그램</div>
+
+    <div id="loading">문제 데이터베이스를 불러오는 중입니다... 잠시만 기다려주세요!</div>
+
+    <div id="menu-screen" class="hidden">
+        <div class="menu-grid">
+            <button class="btn" onclick="startSession('grammar')">
+                📚 문법 통합 세트 (Structure & Written Expression)
+                <span class="count" id="grammar-count">1,700제</span>
+            </button>
+            <button class="btn" onclick="startSession('reading')">
+                📖 독해 통합 세트 (Reading Comprehension)
+                <span class="count" id="reading-count">800제</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="question-box">
+            <div class="q-header">
+                <span id="q-progress">문제 1 / 1700</span>
+                <span id="q-category">문법</span>
+            </div>
+            <div id="passage-box" class="explanation hidden" style="margin-bottom: 20px; background: #fffbeb; border: 1px solid #fde68a;"></div>
+            <div class="q-text" id="q-text">문장 로딩중...</div>
+            <div class="options" id="options-container"></div>
+            <div id="explanation-box" class="explanation hidden"></div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" onclick="prevQuestion()">이전 문제</button>
+                <button class="btn" id="next-btn" onclick="nextQuestion()">다음 문제</button>
+            </div>
+        </div>
+        <div style="margin-top: 20px; text-align: center;">
+            <button class="btn btn-secondary" onclick="returnToMenu()" style="width: auto; padding: 8px 16px; font-size: 0.9rem;">메뉴로 돌아가기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let db = { grammar: [], reading: [] };
+    let currentQuestions = [];
+    let currentIndex = 0;
+    let userAnswers = {};
+
+    async function loadDatabase() {
+        try {
+            const response = await fetch('itp_questions.json');
+            if (!response.ok) throw new Error('데이터 파일을 찾을 수 없습니다.');
+            db = await response.json();
+            
+            document.getElementById('grammar-count').innerText = `${db.grammar.length}제`;
+            document.getElementById('reading-count').innerText = `${db.reading.length}제`;
+            
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('menu-screen').classList.remove('hidden');
+        } catch (error) {
+            document.getElementById('loading').innerHTML = `❌ 문제 데이터를 불러오는 데 실패했습니다.<br><small style="color:red;">${error.message}</small><br><br><b>itp_questions.json</b> 파일이 동일한 폴더에 있는지 확인해주세요.`;
+        }
+    }
+
+    function startSession(type) {
+        currentQuestions = type === 'grammar' ? db.grammar : db.reading;
+        if (!currentQuestions || currentQuestions.length === 0) {
+            alert('문제가 없습니다.');
+            return;
+        }
+        currentIndex = 0;
+        userAnswers = {};
+        document.getElementById('menu-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const q = currentQuestions[currentIndex];
+        document.getElementById('q-progress').innerText = `문제 ${currentIndex + 1} / ${currentQuestions.length}`;
+        document.getElementById('q-category').innerText = q.type || '연습 문제';
+        document.getElementById('q-text').innerText = q.question;
+
+        // 독해 지문 처리
+        const passageBox = document.getElementById('passage-box');
+        if (q.passage) {
+            passageBox.innerText = q.passage;
+            passageBox.classList.remove('hidden');
+        } else {
+            passageBox.classList.add('hidden');
+        }
+
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = '';
+
+        q.options.forEach((opt, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn';
+            btn.innerText = `${['A', 'B', 'C', 'D'][idx]}. ${opt}`;
+            btn.onclick = () => selectAnswer(idx);
+            
+            if (userAnswers[currentIndex] !== undefined) {
+                if (idx === q.answer) btn.classList.add('correct');
+                if (userAnswers[currentIndex] === idx && idx !== q.answer) btn.classList.add('wrong');
+                if (userAnswers[currentIndex] === idx) btn.classList.add('selected');
+                btn.disabled = true;
+            }
+            optionsContainer.appendChild(btn);
+        });
+
+        const expBox = document.getElementById('explanation-box');
+        if (userAnswers[currentIndex] !== undefined) {
+            expBox.innerHTML = `<b>해설:</b> ${q.explanation || '제공된 해설이 없습니다.'}`;
+            expBox.classList.remove('hidden');
+        } else {
+            expBox.classList.add('hidden');
+        }
+
+        document.getElementById('next-btn').innerText = (currentIndex === currentQuestions.length - 1) ? '처음으로' : '다음 문제';
+    }
+
+    function selectAnswer(idx) {
+        if (userAnswers[currentIndex] !== undefined) return;
+        userAnswers[currentIndex] = idx;
+        loadQuestion();
+    }
+
+    function nextQuestion() {
+        if (currentIndex < currentQuestions.length - 1) {
+            currentIndex++;
+            loadQuestion();
+        } else {
+            if (confirm('모든 문제를 다 풀었습니다. 메뉴로 돌아가시겠습니까?')) {
+                returnToMenu();
+            }
+        }
+    }
+
+    function prevQuestion() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            loadQuestion();
+        }
+    }
+
+    function returnToMenu() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('menu-screen').classList.remove('hidden');
+    }
+
+    window.onload = loadDatabase;
+</script>
+
+</body>
+</html>

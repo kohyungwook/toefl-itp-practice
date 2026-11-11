@@ -1,68 +1,9 @@
 {
-"grammar": {
-"LongmanSet": [
-{
-"id": 1201,
-"type": "Longman Structure",
-"question": "(롱맨 1번) The rings of Saturn are _____ that they can be seen with a small telescope.",
-"choices": ["(A) so bright", "(B) very bright", "(C) too bright", "(D) bright so"],
-"answer": "A",
-"explanation": "• [Longman ITP] so ~ that 구문: '너무 ~해서 ~하다'를 나타낼 때 so + 형용사 + that 절을 사용합니다."
-},
-{
-"id": 1202,
-"type": "Longman Structure",
-"question": "(롱맨 2번) Unlike most birds, _____ and build nests on the ground.",
-"choices": ["(A) ostriches lay eggs", "(B) ostriches' eggs", "(C) eggs of ostriches", "(D) laying ostriches' eggs"],
-"answer": "A",
-"explanation": "• [Longman ITP] 전치사 Unlike 뒤에는 비교 대상이 되는 명사구와 주절의 주어가 일치해야 하므로 ostriches lay eggs가 올바릅니다."
-},
-{
-"id": 1203,
-"type": "Longman Written Expression",
-"question": "(롱맨 3번) Nervous systems vary greatly in structure and complex.",
-"choices": ["(A) Nervous", "(B) systems", "(C) in", "(D) complex"],
-"answer": "D",
-"explanation": "• [Longman ITP 오잘찾] and 앞뒤로 병렬 구조를 이루거나 명사형이 와야 하므로 complex(형용사)를 complexity(명사)로 고쳐야 합니다."
-}
-],
-"All1020": [
-{
-"id": 1,
-"type": "완성형 (Sentence Completion)",
-"question": "(1번) Industrial diamonds _____ hard materials.",
-"choices": ["(A) are used to cut", "(B) are used to be cutting", "(C) used to be cut", "(D) are used to cutting"],
-"answer": "A",
-"explanation": "• be used to V 원형 = ∼하는데 사용된다."
-},
-{
-"id": 2,
-"type": "완성형 (Sentence Completion)",
-"question": "(2번) _____ the trumpet has played a leading role in the development of jazz.",
-"choices": ["(A) From this century", "(B) Since this century has begun", "(C) Since the beginning of this century", "(D) As this century began"],
-"answer": "C",
-"explanation": "• since 가 <since + 과거 시점 또는 절>과 함께 쓰이며 주절에는 현재완료가 온다."
-}
-]
-},
-"reading": {
-"All800": [
-{
-"type": "TOEFL Reading 500제 Comprehension",
-"context": "TOEFL Reading 500제 Passage #1: Academic text analyzing historical shifts, scientific principles, or social phenomena.",
-"question": "(독해 500제 #1) What is the main idea or purpose of the passage described here?",
-"choices": ["(A) To explain a historical trend", "(B) To describe a scientific discovery", "(C) To evaluate a literary movement", "(D) To compare economic policies"],
-"answer": "A",
-"explanation": "• [TOEFL Reading 500제 #1] 본문의 문맥과 세부 정보를 올바르게 이해했는지 묻는 표준 독해 문항입니다."
-},
-{
-"type": "Longman ITP Reading",
-"context": "Longman Reading Practice Passage #1: Academic reading passage with detailed vocabulary and inference questions.",
-"question": "(롱맨 독해 1번) According to the passage, which statement is supported regarding the topic?",
-"choices": ["(A) It has significant global implications.", "(B) It was studied only recently.", "(C) It relies strictly on laboratory settings.", "(D) It contradicts conventional theories."],
-"answer": "B",
-"explanation": "• [Longman Reading Practice #1] 롱맨 ITP 독해 문제은행 문항입니다."
-}
-]
-}
+  "grammar": [
+    {"type": "Structure", "question": "1. Glass that has been tempered _________.", "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"], "answer": 1, "explanation": "주어 'Glass that has been tempered'에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."},
+    {"type": "Written Expression", "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.", "options": ["Economists", "proven", "rapid expansion", "lead"], "answer": 3, "explanation": "주어는 'a rapid expansion'(단수)이므로 동사 'lead'는 단수형 'leads'가 되어야 합니다."}
+  ],
+  "reading": [
+    {"type": "Reading Comprehension", "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.", "question": "1. What is the main topic of the passage?", "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"], "answer": 1, "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."}
+  ]
 }
