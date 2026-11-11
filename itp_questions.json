@@ -1,16 +1,96 @@
 {
   "grammar": [
-    {"type": "Structure", "question": "1. Glass that has been tempered _________.", "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"], "answer": 1, "explanation": "주어 'Glass that has been tempered'에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."},
-    {"type": "Written Expression", "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.", "options": ["Economists", "proven", "rapid expansion", "lead"], "answer": 3, "explanation": "주어는 'a rapid expansion'(단수)이므로 동사 'lead'는 단수형 'leads'가 되어야 합니다."},
+    {"type": "Structure", "question": "1. Glass that has been tempered _________.", "options": ["it is breaking into small pieces", "breaks into small pieces", "to break small pieces", "breaking into small pieces"], "answer": 1, "explanation": "주어에 대한 본동사가 필요하므로 'breaks into small pieces'가 정답입니다."},
+    {"type": "Written Expression", "question": "2. (A) Economists have (B) proven that a (C) rapid expansion of the money supply (D) lead to inflation.", "options": ["Economists", "proven", "rapid expansion", "lead"], "answer": 3, "explanation": "주어 'a rapid expansion'이 단수이므로 동사 'lead'는 'leads'가 되어야 합니다."},
     {"type": "Structure", "question": "3. The first cotton mill in the United States _________ in Pawtucket, Rhode Island, in 1790.", "options": ["was established", "establishing", "established", "it was established"], "answer": 0, "explanation": "1790년에 설립된 수동태 문장이므로 'was established'가 정답입니다."},
     {"type": "Written Expression", "question": "4. (A) Unlike most bird, (B) the male emperor penguin (C) alone incubates (D) the egg.", "options": ["Unlike", "most bird", "alone incubates", "the egg"], "answer": 1, "explanation": "most 뒤에는 복수명사가 와야 하므로 'most birds'가 되어야 합니다."},
-    {"type": "Structure", "question": "5. Not only _________ generate electricity, but it also creates magnetic fields.", "options": ["does a dynamo", "a dynamo does", "is a dynamo", "a dynamo is"], "answer": 0, "explanation": "Not only가 문장 맨 앞에 오면 주어와 동사가 도치되므로 'does a dynamo'가 정답입니다."}
+    {"type": "Structure", "question": "5. Not only _________ generate electricity, but it also creates magnetic fields.", "options": ["does a dynamo", "a dynamo does", "is a dynamo", "a dynamo is"], "answer": 0, "explanation": "Not only 도치 구문으로 'does a dynamo'가 정답입니다."},
+    {"type": "Structure", "question": "6. Helium is a colorless, odorless, and tasteless gas _________ at extremely low temperatures.", "options": ["that liquefies", "liquefies it", "it liquefies", "that it liquefies"], "answer": 0, "explanation": "주격 관계대명사절이 gas를 수식해야 하므로 'that liquefies'가 정답입니다."},
+    {"type": "Written Expression", "question": "7. (A) Modern agriculture has (B) resulted in a (C) much greater crop yields (D) than ever before.", "options": ["Modern", "resulted", "much greater", "than"], "answer": 2, "explanation": "yields는 가산명사 복수형이므로 'many greater' 혹은 'much greater yields' 형태가 되어야 합니다."},
+    {"type": "Structure", "question": "8. Unlike general hospitals, _________ exclusively on treating patients with specific chronic conditions.", "options": ["specialized medical centers focusing", "specialized medical centers focus", "focusing specialized medical centers", "where specialized medical centers focus"], "answer": 1, "explanation": "주절의 동사 'focus'가 포함된 완결된 구조가 와야 하므로 'specialized medical centers focus'가 정답입니다."},
+    {"type": "Written Expression", "question": "9. (A) Beavers use (B) their strong front teeth (C) to cutting down trees and (D) branches.", "options": ["Beavers", "their", "to cutting", "branches"], "answer": 2, "explanation": "~하기 위해 사용하다는 'used to 동사원형'이므로 'to cut'이 되어야 합니다."},
+    {"type": "Structure", "question": "10. Only when the chemical reaction is complete _________ safe to touch.", "options": ["the material is", "is the material", "the material", "that the material is"], "answer": 1, "explanation": "Only가 문두에 와서 주어와 동사가 도치되어야 하므로 'is the material'이 정답입니다."}
   ],
   "reading": [
-    {"type": "Reading Comprehension", "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.", "question": "1. What is the main topic of the passage?", "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"], "answer": 1, "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."},
-    {"type": "Reading Comprehension", "passage": "The chameleon is best known for its ability to change color, which it uses primarily for communication and temperature regulation rather than camouflage.", "question": "2. According to the passage, why do chameleons change color?", "options": ["To hide from predators completely", "For communication and temperature regulation", "To find food in the dark", "To attract other animal species"], "answer": 1, "explanation": "지문에서 의사소통(communication)과 체온 조절(temperature regulation)을 위해서라고 명시되어 있습니다."},
-    {"type": "Reading Comprehension", "passage": "Despite their fierce reputation, great white sharks rarely attack humans intentionally, most bites being exploratory rather than predatory.", "question": "3. What does the passage say about great white shark attacks?", "options": ["They are usually done for food.", "They are mostly exploratory rather than predatory.", "They happen frequently and intentionally.", "They are entirely unprovoked."], "answer": 1, "explanation": "대부분의 공격은 포식 목적이 아니라 탐색(exploratory) 목적이라고 언급되어 있습니다."},
-    {"type": "Reading Comprehension", "passage": "Photosynthesis is the process used by plants to convert light energy into chemical energy that can later be released to fuel the organisms' activities.", "question": "4. What is the primary function of photosynthesis in plants?", "options": ["To absorb water from soil", "To convert light energy into chemical energy", "To release carbon dioxide into the air", "To protect leaves from insects"], "answer": 1, "explanation": "빛 에너지를 화학 에너지로 전환하는 과정이라고 설명되어 있습니다."},
-    {"type": "Reading Comprehension", "passage": "The Industrial Revolution, which began in Great Britain in the mid-18th century, transformed largely agrarian societies into industrialized urban economies.", "question": "5. What was a major effect of the Industrial Revolution?", "options": ["Agrarian societies grew larger.", "Societies shifted from agrarian to urban economies.", "Great Britain stopped trading globally.", "Urban populations moved to rural areas."], "answer": 1, "explanation": "농업 사회가 산업화된 도시 경제로 전환(transformed... into industrialized urban economies)되었다고 서술되어 있습니다."}
+    {
+      "type": "Reading Comprehension",
+      "passage": "Sequoyah was a famous Cherokee who created a writing system for his people in the early nineteenth century. Before his invention, the Cherokee language had no written form.",
+      "question": "1. What is the main topic of the passage?",
+      "options": ["The history of the Cherokee nation", "Sequoyah's invention of the Cherokee writing system", "Nineteenth-century American education", "How languages develop over time"],
+      "answer": 1,
+      "explanation": "지문은 세쿼야가 체로키 부족을 위해 문자 체계를 발명한 업적을 다루고 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "The chameleon is best known for its ability to change color, which it uses primarily for communication and temperature regulation rather than camouflage.",
+      "question": "2. According to the passage, why do chameleons change color?",
+      "options": ["To hide from predators completely", "For communication and temperature regulation", "To find food in the dark", "To attract other animal species"],
+      "answer": 1,
+      "explanation": "지문에서 의사소통(communication)과 체온 조절(temperature regulation)을 위해서라고 명시되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "Despite their fierce reputation, great white sharks rarely attack humans intentionally, most bites being exploratory rather than predatory.",
+      "question": "3. What does the passage say about great white shark attacks?",
+      "options": ["They are usually done for food.", "They are mostly exploratory rather than predatory.", "They happen frequently and intentionally.", "They are entirely unprovoked."],
+      "answer": 1,
+      "explanation": "대부분의 공격은 포식 목적이 아니라 탐색(exploratory) 목적이라고 언급되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "Photosynthesis is the process used by plants to convert light energy into chemical energy that can later be released to fuel the organisms' activities.",
+      "question": "4. What is the primary function of photosynthesis in plants?",
+      "options": ["To absorb water from soil", "To convert light energy into chemical energy", "To release carbon dioxide into the air", "To protect leaves from insects"],
+      "answer": 1,
+      "explanation": "빛 에너지를 화학 에너지로 전환하는 과정이라고 설명되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "The Industrial Revolution, which began in Great Britain in the mid-18th century, transformed largely agrarian societies into industrialized urban economies.",
+      "question": "5. What was a major effect of the Industrial Revolution?",
+      "options": ["Agrarian societies grew larger.", "Societies shifted from agrarian to urban economies.", "Great Britain stopped trading globally.", "Urban populations moved to rural areas."],
+      "answer": 1,
+      "explanation": "농업 사회가 산업화된 도시 경제로 전환되었다고 서술되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "Coral reefs are diverse underwater ecosystems held together by calcium carbonate structures. They are built by colonies of tiny animals found in marine waters that contain few nutrients.",
+      "question": "6. What are coral reefs primarily built by?",
+      "options": ["Volcanic rock formations", "Colonies of tiny marine animals", "Deep sea plant roots", "Sand and mineral deposits"],
+      "answer": 1,
+      "explanation": "바다에 사는 작은 동물들의 군체(colonies of tiny animals)에 의해 지어진다고 설명되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "The Sahara is the largest hot desert in the world, spanning across North Africa. Despite harsh conditions, it supports a variety of specialized flora and fauna.",
+      "question": "7. What is noted about the Sahara Desert in the passage?",
+      "options": ["It has no living organisms.", "It is the largest hot desert in the world.", "It is located in South America.", "It receives heavy annual rainfall."],
+      "answer": 1,
+      "explanation": "사하라 사막은 세계에서 가장 큰 뜨거운 사막이라고 언급되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "Acupuncture is a form of alternative medicine in which thin needles are inserted into the body. It is a key component of traditional Chinese medicine used mainly for pain relief.",
+      "question": "8. What is the primary use of acupuncture according to the passage?",
+      "options": ["Treating infectious diseases", "Pain relief", "Improving eyesight", "Lowering body temperature"],
+      "answer": 1,
+      "explanation": "주로 통증 완화(pain relief)를 위해 사용된다고 명시되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "Mars, often called the Red Planet because of iron oxide prevalent on its surface, has two moons named Phobos and Deimos.",
+      "question": "9. Why is Mars referred to as the Red Planet?",
+      "options": ["Because of iron oxide on its surface", "Due to intense solar radiation", "Because of red vegetation", "Because of frequent volcanic eruptions"],
+      "answer": 1,
+      "explanation": "표면에 산화철(iron oxide)이 만연해 있기 때문이라고 설명되어 있습니다."
+    },
+    {
+      "type": "Reading Comprehension",
+      "passage": "Enzymes are biological catalysts that accelerate chemical reactions in living organisms without being consumed in the process.",
+      "question": "10. What is a key characteristic of enzymes?",
+      "options": ["They are consumed during reactions.", "They slow down chemical processes.", "They accelerate chemical reactions without being consumed.", "They only function at high pressures."],
+      "answer": 1,
+      "explanation": "과정 중에 소모되지 않고 화학 반응을 가속화(accelerate chemical reactions without being consumed)한다고 설명되어 있습니다."
+    }
   ]
 }
